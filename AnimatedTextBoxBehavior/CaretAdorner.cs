@@ -118,7 +118,6 @@ namespace ermau
 		private CancellationTokenSource cancelSource;
 		private readonly Rectangle caret;
 		private readonly VisualCollection children;
-		// Supposedly the real one is "delta of key down/up divided by pi"
 		private readonly Duration shiftDuration = new Duration (TimeSpan.FromMilliseconds (50));
 
 		private TextBox TextBox
@@ -144,14 +143,19 @@ namespace ermau
 				this.caret.Visibility = Visibility.Visible;
 				Rect position = TextBox.GetRectFromCharacterIndex (TextBox.CaretIndex);
 				double left = Math.Round (position.Left);
+				double top = Math.Round (position.Top);
 
 				this.blinkStoryboard.Stop (this.caret);
 				this.caret.Opacity = 1;
 
 				if (fromMouse)
-					this.caret.RenderTransform = new TranslateTransform (left, 0);
-				else
-					this.caret.RenderTransform.BeginAnimation (TranslateTransform.XProperty, new DoubleAnimation (left, this.shiftDuration), HandoffBehavior.Compose);
+					this.caret.RenderTransform = new TranslateTransform (left, top);
+				else {
+					if (left != ((TranslateTransform) this.caret.RenderTransform).X)
+						this.caret.RenderTransform.BeginAnimation (TranslateTransform.XProperty, new DoubleAnimation (left, this.shiftDuration), HandoffBehavior.Compose);
+					if (top != ((TranslateTransform) this.caret.RenderTransform).Y)
+						this.caret.RenderTransform.BeginAnimation (TranslateTransform.YProperty, new DoubleAnimation (top, this.shiftDuration), HandoffBehavior.Compose);
+				}
 
 				try {
 					await Task.Delay (SystemInformation.CaretBlinkTime, this.cancelSource.Token);
