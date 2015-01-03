@@ -113,7 +113,6 @@ namespace ermau
 		}
 
 		private Storyboard blinkStoryboard;
-		private int lastPosition;
 		private bool mouseInput;
 		private CancellationTokenSource cancelSource;
 		private readonly Rectangle caret;
@@ -164,8 +163,6 @@ namespace ermau
 				} catch (OperationCanceledException) {
 				}
 			}
-
-			this.lastPosition = TextBox.CaretIndex;
 		}
 
 		private void OnPreviewMouseDown (object sender, MouseButtonEventArgs e)
