@@ -1,0 +1,11 @@
+﻿<Window x:Class="AnimatedTextBoxBehavior.Example.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ermau="clr-namespace:ermau;assembly=AnimatedTextBoxBehavior">
+    <TextBox AcceptsReturn="True">
+		<i:Interaction.Behaviors>
+            <ermau:AnimatedTextBoxBehavior />
+        </i:Interaction.Behaviors>
+	</TextBox>
+</Window>
