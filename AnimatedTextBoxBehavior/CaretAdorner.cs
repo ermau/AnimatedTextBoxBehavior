@@ -86,6 +86,9 @@ namespace ermau
 
 		public void Dispose()
 		{
+			if (TextBox == null)
+				return;
+
 			TextBox.SelectionChanged -= OnSelectionChanged;
 			TextBox.PreviewMouseDown -= OnPreviewMouseDown;
 		}
