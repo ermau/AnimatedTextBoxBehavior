@@ -134,28 +134,26 @@ namespace ermau
 			bool fromMouse = this.mouseInput;
 			this.mouseInput = false;
 
-			// TODO: Animate highlight box as well
-			if (TextBox.SelectedText != String.Empty)
-				this.caret.Visibility = Visibility.Collapsed;
-			else
-			{
-				this.caret.Visibility = Visibility.Visible;
-				Rect position = TextBox.GetRectFromCharacterIndex (TextBox.CaretIndex);
-				double left = Math.Round (position.Left);
-				double top = Math.Round (position.Top);
+			bool visible = (TextBox.SelectedText == String.Empty);
+			this.caret.Visibility = (visible) ? Visibility.Visible : Visibility.Collapsed;
+			
+			Rect position = TextBox.GetRectFromCharacterIndex (TextBox.CaretIndex);
+			double left = Math.Round (position.Left);
+			double top = Math.Round (position.Top);
 
-				this.blinkStoryboard.Stop (this.caret);
-				this.caret.Opacity = 1;
+			this.blinkStoryboard.Stop (this.caret);
+			this.caret.Opacity = 1;
 
-				if (fromMouse)
-					this.caret.RenderTransform = new TranslateTransform (left, top);
-				else {
-					if (left != ((TranslateTransform) this.caret.RenderTransform).X)
-						this.caret.RenderTransform.BeginAnimation (TranslateTransform.XProperty, new DoubleAnimation (left, this.shiftDuration), HandoffBehavior.Compose);
-					if (top != ((TranslateTransform) this.caret.RenderTransform).Y)
-						this.caret.RenderTransform.BeginAnimation (TranslateTransform.YProperty, new DoubleAnimation (top, this.shiftDuration), HandoffBehavior.Compose);
-				}
+			if (fromMouse || !visible)
+				this.caret.RenderTransform = new TranslateTransform (left, top);
+			else {
+				if (left != ((TranslateTransform) this.caret.RenderTransform).X)
+					this.caret.RenderTransform.BeginAnimation (TranslateTransform.XProperty, new DoubleAnimation (left, this.shiftDuration), HandoffBehavior.Compose);
+				if (top != ((TranslateTransform) this.caret.RenderTransform).Y)
+					this.caret.RenderTransform.BeginAnimation (TranslateTransform.YProperty, new DoubleAnimation (top, this.shiftDuration), HandoffBehavior.Compose);
+			}
 
+			if (visible) {
 				try {
 					await Task.Delay (SystemInformation.CaretBlinkTime, this.cancelSource.Token);
 					this.blinkStoryboard.Begin (this.caret, isControllable: true);
