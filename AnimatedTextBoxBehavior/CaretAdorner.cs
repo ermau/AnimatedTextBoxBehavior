@@ -56,6 +56,8 @@ namespace ermau
 
 			adornedElement.SelectionChanged += OnSelectionChanged;
 			adornedElement.PreviewMouseDown += OnPreviewMouseDown;
+			adornedElement.GotKeyboardFocus += OnGotFocus;
+			adornedElement.LostKeyboardFocus += OnLostFocus;
 
 			this.children = new VisualCollection (this);
 			this.children.Add (this.caret);
@@ -68,10 +70,10 @@ namespace ermau
 
 			var fade = new DoubleAnimationUsingKeyFrames {
 				KeyFrames = {
-					new EasingDoubleKeyFrame (1, KeyTime.FromTimeSpan (fadeTime)),
-					new DiscreteDoubleKeyFrame (1, KeyTime.FromTimeSpan (fadeTime + holdTime)),
-					new EasingDoubleKeyFrame (0, KeyTime.FromTimeSpan (fadeTime + holdTime + fadeTime)),
-					new DiscreteDoubleKeyFrame (0, KeyTime.FromTimeSpan (fadeTime + holdTime + fadeTime + holdTime))
+					new EasingDoubleKeyFrame (0, KeyTime.FromTimeSpan (fadeTime)),
+					new DiscreteDoubleKeyFrame (0, KeyTime.FromTimeSpan (fadeTime + holdTime)),
+					new EasingDoubleKeyFrame (1, KeyTime.FromTimeSpan (fadeTime + holdTime + fadeTime)),
+					new DiscreteDoubleKeyFrame (1, KeyTime.FromTimeSpan (fadeTime + holdTime + fadeTime + holdTime))
 				},
 
 				Duration = new Duration (TimeSpan.FromMilliseconds (transitionTime * 2))
@@ -80,7 +82,6 @@ namespace ermau
 			fade.Freeze();
 
 			storyboard.Children.Add (fade);
-			storyboard.Begin (this.caret, isControllable: true);
 			this.blinkStoryboard = storyboard;
 		}
 
@@ -91,6 +92,8 @@ namespace ermau
 
 			TextBox.SelectionChanged -= OnSelectionChanged;
 			TextBox.PreviewMouseDown -= OnPreviewMouseDown;
+			TextBox.GotKeyboardFocus -= OnGotFocus;
+			TextBox.LostKeyboardFocus -= OnLostFocus;
 		}
 
 		protected override int VisualChildrenCount
@@ -164,6 +167,18 @@ namespace ermau
 				} catch (OperationCanceledException) {
 				}
 			}
+		}
+
+		private void OnLostFocus (object sender, RoutedEventArgs routedEventArgs)
+		{
+			this.blinkStoryboard.Stop (this.caret);
+			this.caret.Opacity = 0;
+		}
+
+		private void OnGotFocus (object sender, RoutedEventArgs routedEventArgs)
+		{
+			this.caret.Opacity = 1;
+			this.blinkStoryboard.Begin (this.caret, isControllable: true);
 		}
 
 		private void OnPreviewMouseDown (object sender, MouseButtonEventArgs e)
