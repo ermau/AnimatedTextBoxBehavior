@@ -5,7 +5,7 @@ Overview
 These animations are meant to simply provide a nicer experience, without getting in the way or slowing you down.
 
 Features
---------
+========
 
  - Caret blink is a fade
  - Animated keyboard-based caret movement (typing, arrow keys, home/end).

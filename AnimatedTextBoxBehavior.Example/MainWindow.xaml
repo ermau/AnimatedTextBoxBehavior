@@ -2,8 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ermau="clr-namespace:ermau;assembly=AnimatedTextBoxBehavior">
-    <TextBox AcceptsReturn="True" FontSize="20">
+        xmlns:ermau="clr-namespace:ermau;assembly=AnimatedTextBoxBehavior"
+		Height="300" Width="500" Title="AnimatedTextBoxBehavior">
+    <TextBox AcceptsReturn="True" FontSize="40">
 		<i:Interaction.Behaviors>
             <ermau:AnimatedTextBoxBehavior />
         </i:Interaction.Behaviors>
