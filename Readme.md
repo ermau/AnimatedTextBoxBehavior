@@ -8,7 +8,12 @@ Features
 ========
 
  - Caret blink is a fade
+
+ ![Blink](AnimatedTextBoxBehavior.Example/blink.gif)
+
  - Animated keyboard-based caret movement (typing, arrow keys, home/end).
+
+ ![Typing](AnimatedTextBoxBehavior.Example/typing.gif)
 
 Usage
 ========
