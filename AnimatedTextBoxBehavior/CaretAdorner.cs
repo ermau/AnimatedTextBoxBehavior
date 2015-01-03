@@ -54,7 +54,6 @@ namespace ermau
 				SnapsToDevicePixels = true
 			};
 
-			adornedElement.SizeChanged += OnAdornedSizeChanged;
 			adornedElement.SelectionChanged += OnSelectionChanged;
 			adornedElement.PreviewMouseDown += OnPreviewMouseDown;
 
@@ -87,7 +86,6 @@ namespace ermau
 
 		public void Dispose()
 		{
-			TextBox.SizeChanged -= OnAdornedSizeChanged;
 			TextBox.SelectionChanged -= OnSelectionChanged;
 			TextBox.PreviewMouseDown -= OnPreviewMouseDown;
 		}
@@ -172,11 +170,6 @@ namespace ermau
 				return;
 
 			this.mouseInput = true;
-		}
-
-		private void OnAdornedSizeChanged (object sender, SizeChangedEventArgs e)
-		{
-			this.caret.Height = e.NewSize.Height - 3;
 		}
 
 		private void OnSelectionChanged (object sender, RoutedEventArgs e)
