@@ -49,7 +49,7 @@ namespace ermau
 				Width = 1,
 				Height = fontRect.Height,
 				Fill = Brushes.Black,
-				RenderTransform = new TranslateTransform(),
+				RenderTransform = new TranslateTransform (fontRect.Left, fontRect.Top),
 				Opacity = 0,
 				SnapsToDevicePixels = true
 			};
