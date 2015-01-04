@@ -25,8 +25,10 @@
 // THE SOFTWARE.
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
@@ -38,7 +40,11 @@ namespace ermau
 	{
 		protected override void OnAttached()
 		{
+			this.originalCaretBrush = AssociatedObject.CaretBrush;
 			AssociatedObject.CaretBrush = Brushes.Transparent;
+
+			var descriptor = DependencyPropertyDescriptor.FromProperty (TextBoxBase.CaretBrushProperty, typeof (TextBox));
+			descriptor.AddValueChanged (AssociatedObject, OnCaretBrushChanged);
 
 			if (!AssociatedObject.IsLoaded) {
 				AssociatedObject.Loaded += OnAssociatedObjectLoaded;
@@ -48,13 +54,25 @@ namespace ermau
 
 		protected override void OnDetaching()
 		{
+			var descriptor = DependencyPropertyDescriptor.FromProperty (TextBoxBase.CaretBrushProperty, typeof (TextBox));
+			descriptor.RemoveValueChanged (AssociatedObject, OnCaretBrushChanged);
+
+			AssociatedObject.CaretBrush = this.originalCaretBrush;
 			this.layer.Remove (this.cursorAdorner);
 			this.cursorAdorner.Dispose();
 			this.cursorAdorner = null;
 		}
 
+		private Brush originalCaretBrush;
 		private AdornerLayer layer;
 		private CaretAdorner cursorAdorner;
+
+		private void OnCaretBrushChanged (object sender, EventArgs eventArgs)
+		{
+			Brush brush = AssociatedObject.CaretBrush;
+			this.cursorAdorner.CaretBrush = brush;
+			this.originalCaretBrush = brush;
+		}
 
 		private void OnAssociatedObjectLoaded (object sender, RoutedEventArgs e)
 		{
@@ -66,7 +84,9 @@ namespace ermau
 		{
 			this.layer = AdornerLayer.GetAdornerLayer (AssociatedObject);
 
-			this.cursorAdorner = new CaretAdorner (AssociatedObject);
+			this.cursorAdorner = new CaretAdorner (AssociatedObject) {
+				CaretBrush = this.originalCaretBrush
+			};
 			this.layer.Add (this.cursorAdorner);
 		}
 	}

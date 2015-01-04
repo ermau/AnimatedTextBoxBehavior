@@ -85,6 +85,18 @@ namespace ermau
 			this.blinkStoryboard = storyboard;
 		}
 
+		public Brush CaretBrush
+		{
+			get { return this.caret.Fill; }
+			set
+			{
+				if (value == null)
+					value = Brushes.Black;
+
+				this.caret.Fill = value;
+			}
+		}
+
 		public void Dispose()
 		{
 			if (TextBox == null)
