@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -23,6 +24,20 @@ namespace AnimatedTextBoxBehavior.Example
 		public MainWindow ()
 		{
 			InitializeComponent ();
+		}
+
+		private void OnToggleAnimations (object sender, RoutedEventArgs e)
+		{
+			BehaviorCollection behaviors = Interaction.GetBehaviors (this.text);
+			if (behaviors.Count > 0)
+				behaviors.RemoveAt (0);
+			else
+				behaviors.Add (new ermau.AnimatedTextBoxBehavior());
+		}
+
+		private void OnToggleColor (object sender, RoutedEventArgs e)
+		{
+			this.text.CaretBrush = (this.text.CaretBrush == Brushes.Red) ? Brushes.Blue : Brushes.Red;
 		}
 	}
 }

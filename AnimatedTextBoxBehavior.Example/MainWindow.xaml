@@ -4,9 +4,29 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ermau="clr-namespace:ermau;assembly=AnimatedTextBoxBehavior"
 		Height="300" Width="500" Title="AnimatedTextBoxBehavior">
-    <TextBox AcceptsReturn="True" FontSize="40">
-		<i:Interaction.Behaviors>
-            <ermau:AnimatedTextBoxBehavior />
-        </i:Interaction.Behaviors>
-	</TextBox>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		
+		<TextBox Name="text" AcceptsReturn="True" FontSize="40">
+			<i:Interaction.Behaviors>
+				<ermau:AnimatedTextBoxBehavior />
+			</i:Interaction.Behaviors>
+		</TextBox>
+		
+		<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<StackPanel.Resources>
+				<Style TargetType="Button">
+					<Setter Property="Margin" Value="5" />
+					<Setter Property="Padding" Value="3" />
+				</Style>
+			</StackPanel.Resources>
+			
+			<Button Click="OnToggleAnimations">Toggle Animations</Button>
+			<Button Click="OnToggleColor">Toggle Color</Button>
+		</StackPanel>
+		
+	</Grid>
 </Window>
