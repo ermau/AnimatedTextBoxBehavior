@@ -58,19 +58,19 @@ namespace ermau
 			descriptor.RemoveValueChanged (AssociatedObject, OnCaretBrushChanged);
 
 			AssociatedObject.CaretBrush = this.originalCaretBrush;
-			this.layer.Remove (this.cursorAdorner);
-			this.cursorAdorner.Dispose();
-			this.cursorAdorner = null;
+			this.layer.Remove (this.caretAdorner);
+			this.caretAdorner.Dispose();
+			this.caretAdorner = null;
 		}
 
 		private Brush originalCaretBrush;
 		private AdornerLayer layer;
-		private CaretAdorner cursorAdorner;
+		private CaretAdorner caretAdorner;
 
 		private void OnCaretBrushChanged (object sender, EventArgs eventArgs)
 		{
 			Brush brush = AssociatedObject.CaretBrush;
-			this.cursorAdorner.CaretBrush = brush;
+			this.caretAdorner.CaretBrush = brush;
 			this.originalCaretBrush = brush;
 		}
 
@@ -84,10 +84,10 @@ namespace ermau
 		{
 			this.layer = AdornerLayer.GetAdornerLayer (AssociatedObject);
 
-			this.cursorAdorner = new CaretAdorner (AssociatedObject) {
+			this.caretAdorner = new CaretAdorner (AssociatedObject) {
 				CaretBrush = this.originalCaretBrush
 			};
-			this.layer.Add (this.cursorAdorner);
+			this.layer.Add (this.caretAdorner);
 		}
 	}
 }

@@ -142,7 +142,7 @@ namespace ermau
 			get { return (TextBox) AdornedElement; }
 		}
 
-		private async void UpdateCursorPosition()
+		private async void UpdateCaretPosition()
 		{
 			if (this.cancelSource != null)
 				this.cancelSource.Cancel();
@@ -203,7 +203,7 @@ namespace ermau
 
 		private void OnSelectionChanged (object sender, RoutedEventArgs e)
 		{
-			UpdateCursorPosition();
+			UpdateCaretPosition();
 		}
 	}
 }
