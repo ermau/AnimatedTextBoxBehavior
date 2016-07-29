@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
@@ -85,8 +86,10 @@ namespace ermau
 			this.layer = AdornerLayer.GetAdornerLayer (AssociatedObject);
 
 			this.caretAdorner = new CaretAdorner (AssociatedObject) {
-				CaretBrush = this.originalCaretBrush
+				CaretBrush = this.originalCaretBrush,
+				DataContext = AssociatedObject
 			};
+			this.caretAdorner.SetBinding (UIElement.VisibilityProperty, new Binding (nameof (TextBox.Visibility)));
 			this.layer.Add (this.caretAdorner);
 		}
 	}

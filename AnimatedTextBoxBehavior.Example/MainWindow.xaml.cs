@@ -39,5 +39,11 @@ namespace AnimatedTextBoxBehavior.Example
 		{
 			this.text.CaretBrush = (this.text.CaretBrush == Brushes.Red) ? Brushes.Blue : Brushes.Red;
 		}
+
+		private void OnToggleVisibility (object sender, RoutedEventArgs e)
+		{
+			this.text.Focus();
+			this.text.Visibility = (this.text.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+		}
 	}
 }

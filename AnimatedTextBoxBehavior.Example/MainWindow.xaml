@@ -26,6 +26,7 @@
 			
 			<Button Click="OnToggleAnimations">Toggle Animations</Button>
 			<Button Click="OnToggleColor">Toggle Color</Button>
+			<Button Click="OnToggleVisibility">Toggle Visibility</Button>
 		</StackPanel>
 		
 	</Grid>
