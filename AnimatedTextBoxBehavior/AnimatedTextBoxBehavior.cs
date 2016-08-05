@@ -41,12 +41,6 @@ namespace ermau
 	{
 		protected override void OnAttached()
 		{
-			this.originalCaretBrush = AssociatedObject.CaretBrush;
-			AssociatedObject.CaretBrush = Brushes.Transparent;
-
-			var descriptor = DependencyPropertyDescriptor.FromProperty (TextBoxBase.CaretBrushProperty, typeof (TextBox));
-			descriptor.AddValueChanged (AssociatedObject, OnCaretBrushChanged);
-
 			if (!AssociatedObject.IsLoaded) {
 				AssociatedObject.Loaded += OnAssociatedObjectLoaded;
 			} else
@@ -83,6 +77,12 @@ namespace ermau
 
 		private void SetupAdorner()
 		{
+			this.originalCaretBrush = AssociatedObject.CaretBrush;
+			AssociatedObject.CaretBrush = Brushes.Transparent;
+
+			var descriptor = DependencyPropertyDescriptor.FromProperty (TextBoxBase.CaretBrushProperty, typeof (TextBox));
+			descriptor.AddValueChanged (AssociatedObject, OnCaretBrushChanged);
+
 			this.layer = AdornerLayer.GetAdornerLayer (AssociatedObject);
 
 			this.caretAdorner = new CaretAdorner (AssociatedObject) {
