@@ -54,6 +54,7 @@ namespace ermau
 				SnapsToDevicePixels = true
 			};
 
+			adornedElement.SizeChanged += OnSizeChanged;
 			adornedElement.SelectionChanged += OnSelectionChanged;
 			adornedElement.PreviewMouseDown += OnPreviewMouseDown;
 			adornedElement.GotKeyboardFocus += OnGotFocus;
@@ -106,6 +107,7 @@ namespace ermau
 			TextBox.PreviewMouseDown -= OnPreviewMouseDown;
 			TextBox.GotKeyboardFocus -= OnGotFocus;
 			TextBox.LostKeyboardFocus -= OnLostFocus;
+			TextBox.SizeChanged -= OnSizeChanged;
 		}
 
 		protected override int VisualChildrenCount
@@ -142,7 +144,7 @@ namespace ermau
 			get { return (TextBox) AdornedElement; }
 		}
 
-		private async void UpdateCaretPosition()
+		private async void UpdateCaretPosition (Size? oldSize = null)
 		{
 			if (this.cancelSource != null)
 				this.cancelSource.Cancel();
@@ -158,6 +160,13 @@ namespace ermau
 			Rect position = TextBox.GetRectFromCharacterIndex (TextBox.CaretIndex);
 			double left = Math.Round (position.Left);
 			double top = Math.Round (position.Top);
+
+			if (oldSize != null) {
+				if (oldSize.Value.Height > TextBox.ActualHeight)
+					left -= (oldSize.Value.Height - TextBox.ActualHeight);
+				if (oldSize.Value.Width > TextBox.ActualWidth)
+					top -= (oldSize.Value.Width - TextBox.ActualWidth);
+			}
 
 			this.blinkStoryboard.Stop (this.caret);
 			this.caret.Opacity = 1;
@@ -204,6 +213,11 @@ namespace ermau
 		private void OnSelectionChanged (object sender, RoutedEventArgs e)
 		{
 			UpdateCaretPosition();
+		}
+
+		private void OnSizeChanged (object sender, SizeChangedEventArgs e)
+		{
+			UpdateCaretPosition (e.PreviousSize);
 		}
 	}
 }
